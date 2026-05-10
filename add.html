@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>add-expense</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form id="add-expense">
+      <input type="text" id="amount" placeholder="Amount Spent" />
+      <br />
+      <br />
+
+      <span id="amount-error"> </span>
+
+      <select id="dropdown">
+        <option value="">--Expense Category--</option>
+        <option value="food" name="opt">Food</option>
+        <option value="travel" name="opt">Travel</option>
+        <option value="rent" name="opt">Rent</option>
+        <option value="internet" name="opt">Internet</option>
+        <option value="electricity" name="opt">Electricity</option>
+        <option value="healthcare" name="opt">Health Care</option>
+      </select>
+      <br />
+      <br />
+
+      <span id="category-error"> </span>
+
+      <label>Date Of Expense</label>
+      <br />
+      <input type="date" id="date" placeholder="Date Of Expense" />
+
+      <br />
+      <br />
+      <span id="date-error"> </span>
+
+      <button type="submit" id="save">Save Expense</button>
+    </form>
+
+    <footer id="navbar">
+      <div id="home">
+        <a href="index.html"> Home </a>
+      </div>
+
+      <div id="Add">
+        <a href="add.html"> Add Expense </a>
+      </div>
+
+      <div id="reports">
+        <a href="reports.html"> Reports </a>
+      </div>
+
+      <div id="all-transactions">
+        <a href="transactions.html"> All Transactions </a>
+      </div>
+
+      <div id="Budget">
+        <a href="budget.html"> Budget </a>
+      </div>
+
+      <div id="Settings">
+        <a href="settings.html"> Settings </a>
+      </div>
+    </footer>
+
+    <script type="module" src="./dist/script.js"></script>
+  </body>
+</html>

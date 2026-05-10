@@ -1,0 +1,250 @@
+* {
+  background-color: #ffb090;
+}
+
+#balance {
+  height: 27px;
+  width: 150px;
+  border-style: solid;
+  border-color: #c9996b;
+  background-color: #c9996b;
+  color: white;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+}
+
+#income {
+  height: 27px;
+  width: 150px;
+  border-style: solid;
+  border-color: #c9996b;
+  background-color: #c9996b;
+  color: white;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+}
+
+#expense {
+  height: 27px;
+  width: 150px;
+  border-style: solid;
+  border-color: #c9996b;
+  background-color: #c9996b;
+  color: white;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+}
+
+#mbudget {
+  height: 27px;
+  width: 150px;
+  border-style: solid;
+  border-color: #c9996b;
+  background-color: #c9996b;
+  color: white;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+}
+
+#ybudget {
+  height: 27px;
+  width: 150px;
+  border-style: solid;
+  border-color: #c9996b;
+  background-color: #c9996b;
+  color: white;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+}
+li {
+  background-color: #b5e18b;
+  text-decoration: none;
+  list-style-type: none;
+}
+#recent-transactions {
+  background-color: #b5e18b;
+  margin: auto;
+  height: 200px;
+  width: 400px;
+  text-align: center;
+
+  font-family: poppins;
+  font-size: large;
+
+  border: #1f6f5f 10px solid;
+
+  border-radius: 10%;
+}
+
+input {
+  border-style: solid;
+
+  border-color: black;
+
+  border-radius: 5px;
+}
+
+label {
+  font-family: serif;
+  background-color: #ffef91;
+  font-weight: bolder;
+}
+
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  background-color: #8acbd0;
+  height: 75px;
+  width: 100%;
+
+  border-style: solid;
+  border-color: black;
+  border-radius: 2px;
+
+  bottom: 0;
+  left: 0;
+}
+a {
+  background-color: #8acbd0;
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  height: 400px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  left: 100px;
+  width: 450px;
+  margin: auto;
+  margin-top: 50px;
+  background-color: #ffef91;
+  border: black 2px solid;
+
+  border-radius: 10%;
+}
+#amount {
+  background-color: #ffef91;
+
+  width: 99%;
+  height: 30px;
+  background-color: white;
+}
+select {
+  background-color: whitesmoke;
+
+  height: 30px;
+  width: 100%;
+  border: none;
+
+  border-color: black;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#date {
+  width: 80%;
+  background-color: whitesmoke;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* #save{
+    background-color: whitesmoke;
+    border-style: solid;
+
+    border-color: black;
+
+    border-radius: 10%;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+} */
+#save:hover {
+  cursor: pointer;
+}
+span {
+  color: red;
+}
+
+#budget {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  height: 400px;
+}
+.budget {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: 30px;
+  background-color: #ffef91;
+}
+.val {
+  width: 100%;
+  background-color: white;
+  height: 30px;
+}
+
+button {
+  border: none;
+  border-radius: 30px;
+  margin-top: 30px;
+  background-color: orangered;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bolder;
+  width: 150px;
+  height: 30px;
+}
+button:hover {
+  cursor: pointer;
+}
+input {
+  text-align: center;
+  border: none;
+  border-radius: 30px;
+}
+option {
+  text-align: center;
+}
+
+#totalTransactions {
+  display: flex;
+  background-color: #b5e18b;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  flex-wrap: wrap;
+  border-style: solid;
+  height: 400px;
+
+  border-color: black;
+}
+li {
+  font-size: large;
+}
+
+#searchbar {
+  background-color: white;
+  width: 1100px;
+  height: 50px;
+  margin-left: 50px;
+
+  margin-right: 50px;
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form id="budget">
+      <div id="budgetdiv" class="budget">
+        <input
+          type="text"
+          id="budgetval"
+          class="val"
+          placeholder="Enter Monthly Budget"
+        />
+        <span id="monthlybudgeterror"></span>
+      </div>
+
+      <div id="incomediv" class="budget">
+        <input
+          type="text"
+          id="totalincome"
+          class="val"
+          placeholder="Enter Total Income"
+        />
+        <span id="totalIncomeError"></span>
+      </div>
+
+      <div id="yearlydiv" class="budget">
+        <input
+          type="text"
+          id="yearlybudget"
+          class="val"
+          placeholder="Enter Yearly Budget"
+        />
+        <span id="yearlybudgeterror"></span>
+      </div>
+
+      <button type="submit">Submit Data</button>
+    </form>
+
+    <footer id="navbar">
+      <div id="home">
+        <a href="index.html"> Home </a>
+      </div>
+
+      <div id="Add">
+        <a href="add.html"> Add Expense </a>
+      </div>
+
+      <div id="reports">
+        <a href="reports.html"> Reports </a>
+      </div>
+
+      <div id="all-transactions">
+        <a href="transactions.html"> All Transactions </a>
+      </div>
+
+      <div id="Budget">
+        <a href="budget.html"> Budget </a>
+      </div>
+
+      <div id="Settings">
+        <a href="settings.html"> Settings </a>
+      </div>
+    </footer>
+
+    <script type="module" src="./dist/budget.js"></script>
+  </body>
+</html>

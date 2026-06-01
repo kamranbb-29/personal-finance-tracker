@@ -1,75 +1,130 @@
-let totalTransactions = document.querySelector("#totalTransactions");
-let old = document.querySelector("#oldfirst");
-let latest = document.querySelector("#newfirst");
-let searched = document.querySelector("#searchbar");
-let mostexpensive = document.querySelector("#mostexpensive");
-let leastexpensive = document.querySelector("#leastexpensive");
-let All = localStorage.getItem("transactions");
-if (All) {
-    let maintransac = JSON.parse(All);
-    totalTransactions.innerHTML = maintransac
-        .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-        .join("\n");
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "login.html";
 }
-old.addEventListener("click", (event) => {
-    if (All) {
-        let maintransac = JSON.parse(All);
-        totalTransactions.innerHTML = maintransac
-            .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-            .join("\n");
+let form = document.querySelector("#update-Expense");
+let amount = document.querySelector("#amount");
+let category = document.querySelector("#dropdown");
+let date = document.querySelector("#date");
+let editingExpenseID = "";
+const totalTransactions = document.querySelector("#totalTransactions");
+const old = document.querySelector("#oldfirst");
+const latest = document.querySelector("#newfirst");
+const searched = document.querySelector("#searchbar");
+const mostexpensive = document.querySelector("#mostexpensive");
+const leastexpensive = document.querySelector("#leastexpensive");
+let transactions = [];
+let API_URL = "http://localhost:3000/expense";
+async function getExpense() {
+    const token = localStorage.getItem("token");
+    const response = await fetch(API_URL, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const data = await response.json();
+    transactions = data.expense;
+    render(transactions.slice().reverse());
+}
+getExpense();
+async function updateExpense(id) {
+    form.style.display = "block";
+    editingExpenseID = id;
+    const input = transactions.find((t) => t._id == id);
+    if (input) {
+        amount.value = input.amount.toString();
+        date.value = input.date.toString();
+        category.value = input.category.toString();
+    }
+}
+async function deleteExpense(id) {
+    const token = localStorage.getItem("token");
+    try {
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        getExpense();
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+window.updateExpense = updateExpense;
+window.deleteExpense = deleteExpense;
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    if (editingExpenseID == "") {
+        return;
+    }
+    try {
+        await fetch(`${API_URL}/${editingExpenseID}`, {
+            method: "PATCH",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                amount: amount.value,
+                date: date.value,
+                category: category.value,
+            }),
+        });
+        editingExpenseID = "";
+        form.style.display = "none";
+        form.reset();
+        getExpense();
+    }
+    catch (err) {
+        console.log(err);
     }
 });
-function render() {
-    if (All) {
-        let maintran = JSON.parse(All);
-        let maintransac = maintran.reverse();
-        totalTransactions.innerHTML = maintransac
-            .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-            .join("\n");
-    }
-}
-latest.addEventListener("click", (event) => {
-    render();
+old.addEventListener("click", () => {
+    render([...transactions].sort((a, b) => a.date.localeCompare(b.date)));
 });
-if (All) {
-    searched.addEventListener("input", () => {
-        let maintransac = JSON.parse(All);
-        let query = searched.value.toLowerCase();
-        let results = maintransac.filter((t) => {
-            return (t.category.toLowerCase().includes(query) ||
-                t.date.includes(query) ||
-                t.amount.toString().includes(query));
-        });
-        totalTransactions.innerHTML = results
-            .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-            .join("\n");
+latest.addEventListener("click", () => {
+    render([...transactions].sort((a, b) => b.date.localeCompare(a.date)));
+});
+searched.addEventListener("input", () => {
+    const query = searched.value.toLowerCase().trim();
+    const results = transactions.filter((t) => {
+        return (t.category.toLowerCase().includes(query) ||
+            t.date.includes(query) ||
+            t.amount.toString().includes(query));
     });
-    render();
+    render(results);
+});
+mostexpensive.addEventListener("click", () => {
+    render([...transactions].sort((a, b) => b.amount - a.amount));
+});
+leastexpensive.addEventListener("click", () => {
+    render([...transactions].sort((a, b) => a.amount - b.amount));
+});
+function render(items) {
+    if (items.length === 0) {
+        totalTransactions.innerHTML =
+            "<h1>Transactions</h1><p>No transactions found.</p>";
+        return;
+    }
+    totalTransactions.innerHTML = [
+        "<h1>Transactions</h1>",
+        ...items.map((t) => `<li><strong>${formatAmount(t.amount)}</strong> ${formatCategory(t.category)} ${t.date}</li>
+        <button id="Update" onclick="updateExpense('${t._id}')">Update</button> 
+        <button id="delete" onclick="deleteExpense('${t._id}')">delete</button>`),
+    ].join("\n");
 }
-if (All) {
-    mostexpensive.addEventListener("click", () => {
-        let maintransac = JSON.parse(All);
-        let results = maintransac.sort((a, b) => {
-            return b.amount - a.amount;
-        });
-        totalTransactions.innerHTML = results
-            .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-            .join("\n");
+function formatAmount(amount) {
+    return amount.toLocaleString(undefined, {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
     });
-    leastexpensive.addEventListener("click", () => {
-        let maintransac = JSON.parse(All);
-        let results = maintransac.sort((a, b) => {
-            return a.amount - b.amount;
-        });
-        totalTransactions.innerHTML = results
-            .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-    <br/>`)
-            .join("\n");
-    });
+}
+function formatCategory(category) {
+    return category.charAt(0).toUpperCase() + category.slice(1);
 }
 export {};
+//# sourceMappingURL=transaction.js.map

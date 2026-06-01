@@ -1,64 +1,59 @@
 import { Transaction } from "./types";
-let amount = document.querySelector("#amount") as HTMLInputElement;
+const token = localStorage.getItem("token");
 
-let expensecategory = document.querySelector("#dropdown") as HTMLInputElement;
+if (!token) {
+  window.location.href = "login.html";
+}
+const amount = document.querySelector("#amount") as HTMLInputElement;
+const expensecategory = document.querySelector(
+  "#dropdown",
+) as HTMLSelectElement;
+const date = document.querySelector("#date") as HTMLInputElement;
+const form = document.querySelector("#add-expense") as HTMLFormElement;
+const amountError = document.querySelector("#amount-error") as HTMLElement;
+const categoryError = document.querySelector("#category-error") as HTMLElement;
+const dateError = document.querySelector("#date-error") as HTMLElement;
 
-let date = document.querySelector("#date") as HTMLInputElement;
+const API_URL = "http://localhost:3000/expense";
 
-let form = document.querySelector("#add-expense") as HTMLFormElement;
+async function createExpense(expenseData: Omit<Transaction, "_id">) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(API_URL, {
+    method: "POST",
 
-let amountError = document.querySelector("#amount-error") as HTMLElement;
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(expenseData),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create expense");
+  }
 
-let categoryError = document.querySelector("#category-error") as HTMLElement;
+  return await response.json();
+}
 
-let dateError = document.querySelector("#date-error") as HTMLElement;
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-let recentTransactions = document.querySelector(
-  "#recent-transactions",
-) as HTMLElement;
+  if (!validate()) {
+    return;
+  }
 
-let data = localStorage.getItem("totalamount");
+  const expenseData: Omit<Transaction, "_id"> = {
+    amount: parseFloat(amount.value),
+    category: expensecategory.value,
+    date: date.value,
+  };
 
-let transac = localStorage.getItem("transactions");
+  try {
+    await createExpense(expenseData);
 
-let totalamount: number = data ? parseFloat(data) : 0;
-
-let transactions: Transaction[] = transac ? JSON.parse(transac) : [];
-
-let totalexpense = transactions.reduce((sum, t) => sum + t.amount, 0);
-
-localStorage.setItem("totalamount", JSON.stringify(totalexpense));
-
-form.addEventListener("submit", (event) => {
-  let bool = validate();
-
-  if (!bool) {
-    event.preventDefault();
-  } else if (bool) {
-    transactions.push({
-      amount: parseFloat(amount.value),
-      category: expensecategory.value,
-      date: date.value,
-    });
-    let expenditureCategory = transactions.reduce(
-      (total: any, t: Transaction) => {
-        let category = t.category;
-        let amountdash = t.amount;
-        if (!total[category]) {
-          total[category] = 0;
-        }
-        total[category] += t.amount;
-        return total;
-      },
-      {},
-    );
-    localStorage.setItem("categoryamount", JSON.stringify(expenditureCategory));
-
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-    alert("Expense Added Successfully");
-    let value = parseFloat(amount.value);
-    totalamount = value + totalamount;
-    localStorage.setItem("totalamount", totalamount.toString());
+    alert("expense added successfully");
+    form.reset();
+  } catch (err) {
+    console.log(err);
   }
 });
 
@@ -67,19 +62,22 @@ function validate() {
   dateError.innerText = "";
   categoryError.innerText = "";
   let istrue = true;
-  if (amount.value.trim() == "") {
+  const parsedAmount = parseFloat(amount.value.trim());
+
+  if (amount.value.trim() === "") {
     istrue = false;
     amountError.innerText = "Amount cannot be empty";
-  } else if (isNaN(parseFloat(amount.value.trim()))) {
-    amountError.innerText = "Amount must be a number";
+  } else if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
+    amountError.innerText = "Amount must be a positive number";
     istrue = false;
   }
-  if (date.value.trim() == "") {
+
+  if (date.value.trim() === "") {
     dateError.innerText = "date cannot be empty";
     istrue = false;
   }
 
-  if (expensecategory.value == "") {
+  if (expensecategory.value === "") {
     categoryError.innerText = "Category cannot be empty";
     istrue = false;
   }

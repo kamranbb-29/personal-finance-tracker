@@ -1,43 +1,67 @@
-let balance = document.querySelector("#balance");
-let income = document.querySelector("#income");
-let expense = document.querySelector("#expense");
-let monthbudget = document.querySelector("#mbudget");
-let yearbudget = document.querySelector("#ybudget");
-let rtransaction = document.querySelector("#recent-transactions");
-let totalincome = 0;
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "login.html";
+}
+const balance = document.querySelector("#balance");
+const income = document.querySelector("#income");
+const expense = document.querySelector("#expense");
+const monthbudget = document.querySelector("#mbudget");
+const yearbudget = document.querySelector("#ybudget");
+let transactions = [];
 let totalamount = 0;
-let totalexpense = 0;
-let mbudget = 0;
-let ybudget = 0;
-let saved = localStorage.getItem("totalamount");
-let a = localStorage.getItem("monthlybudget");
-let b = localStorage.getItem("totalIncome");
-let c = localStorage.getItem("yearlybudget");
-let recent = localStorage.getItem("transactions");
-if (saved && expense) {
-    totalamount = parseFloat(saved);
-    expense.innerText = `Total Expense : ${totalamount}`;
+const API_URL1 = "http://localhost:3000/expense";
+const API_URL2 = "http://localhost:3000/budget";
+const rtransaction = document.querySelector("#recent-transactions");
+async function getExpense() {
+    const token = localStorage.getItem("token");
+    const response = await fetch(API_URL1, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const data = await response.json();
+    transactions = data.expense;
+    totalamount = transactions.reduce((sum, t) => sum + t.amount, 0);
+    expense.innerText = `Total Expenses : ${formatAmount(totalamount)}`;
+    const recentarray = transactions.slice(-5).reverse();
+    rtransaction.innerHTML =
+        recentarray.length === 0
+            ? "Recent Transactions : No expenses added yet."
+            : [
+                "Recent Transactions :",
+                ...recentarray.map((t) => `<li><strong>${formatAmount(t.amount)}</strong> ${formatCategory(t.category)} ${t.date}</li>
+              `),
+            ].join("\n");
+    await getBudget();
 }
-if (b) {
-    totalincome = parseFloat(b);
-    income.innerText = `Total Income : ${totalincome}`;
-    let remaining = totalincome - totalamount;
-    balance.innerText = `Total Balance : ${remaining}`;
+getExpense();
+async function getBudget() {
+    const token = localStorage.getItem("token");
+    const response = await fetch(API_URL2, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch budget");
+    }
+    const data = await response.json();
+    income.innerText = `Total Income : ${data.budget.TotalIncome}`;
+    monthbudget.innerText = `Monthly Budget : ${data.budget.MonthlyBudget}`;
+    yearbudget.innerText = `Yearly Budget : ${data.budget.YearlyBudget}`;
+    balance.innerText = `Total Balance : ${data.budget.TotalIncome - totalamount}`;
 }
-if (a) {
-    mbudget = parseFloat(a);
-    monthbudget.innerText = `Monthly Budget : ${mbudget}`;
+function formatAmount(amount) {
+    return amount.toLocaleString(undefined, {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+    });
 }
-if (c) {
-    ybudget = parseFloat(c);
-    yearbudget.innerText = `Yearly Budget : ${ybudget}`;
-}
-if (recent) {
-    let maintransac = JSON.parse(recent);
-    let recentarray = maintransac.slice(-5).reverse();
-    rtransaction.innerHTML = recentarray
-        .map((t) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-      <br/>`)
-        .join("\n");
+function formatCategory(category) {
+    return category.charAt(0).toUpperCase() + category.slice(1);
 }
 export {};
+//# sourceMappingURL=dashboard.js.map

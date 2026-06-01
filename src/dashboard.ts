@@ -1,71 +1,93 @@
 import { Transaction } from "./types";
+const token = localStorage.getItem("token");
 
-let balance = document.querySelector("#balance") as HTMLElement;
+if (!token) {
+  window.location.href = "login.html";
+}
 
-let income = document.querySelector("#income") as HTMLElement;
+const balance = document.querySelector("#balance") as HTMLElement;
 
-let expense = document.querySelector("#expense") as HTMLElement;
+const income = document.querySelector("#income") as HTMLElement;
 
-let monthbudget = document.querySelector("#mbudget") as HTMLElement;
+const expense = document.querySelector("#expense") as HTMLElement;
 
-let yearbudget = document.querySelector("#ybudget") as HTMLElement;
+const monthbudget = document.querySelector("#mbudget") as HTMLElement;
 
-let rtransaction = document.querySelector(
+const yearbudget = document.querySelector("#ybudget") as HTMLElement;
+let transactions: Transaction[] = [];
+let totalamount = 0;
+const API_URL1 = "http://localhost:3000/expense";
+
+const API_URL2 = "http://localhost:3000/budget";
+
+const rtransaction = document.querySelector(
   "#recent-transactions",
 ) as HTMLElement;
 
-let totalincome = 0;
+async function getExpense() {
+  const token = localStorage.getItem("token");
+  const response = await fetch(API_URL1, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  transactions = data.expense;
 
-let totalamount = 0;
-let totalexpense = 0;
-let mbudget = 0;
-let ybudget = 0;
+  totalamount = transactions.reduce((sum, t) => sum + t.amount, 0);
 
-let saved = localStorage.getItem("totalamount");
+  expense.innerText = `Total Expenses : ${formatAmount(totalamount)}`;
 
-let a = localStorage.getItem("monthlybudget");
+  const recentarray = transactions.slice(-5).reverse();
 
-let b = localStorage.getItem("totalIncome");
+  rtransaction.innerHTML =
+    recentarray.length === 0
+      ? "Recent Transactions : No expenses added yet."
+      : [
+          "Recent Transactions :",
+          ...recentarray.map(
+            (t) =>
+              `<li><strong>${formatAmount(t.amount)}</strong> ${formatCategory(
+                t.category,
+              )} ${t.date}</li>
+              `,
+          ),
+        ].join("\n");
 
-let c = localStorage.getItem("yearlybudget");
-
-let recent = localStorage.getItem("transactions");
-
-if (saved && expense) {
-  totalamount = parseFloat(saved);
-  expense.innerText = `Total Expense : ${totalamount}`;
+  await getBudget();
 }
 
-if (b) {
-  totalincome = parseFloat(b);
+getExpense();
+async function getBudget() {
+  const token = localStorage.getItem("token");
 
-  income.innerText = `Total Income : ${totalincome}`;
+  const response = await fetch(API_URL2, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch budget");
+  }
 
-  let remaining = totalincome - totalamount;
-  balance.innerText = `Total Balance : ${remaining}`;
+  const data = await response.json();
+
+  income.innerText = `Total Income : ${data.budget.TotalIncome}`;
+  monthbudget.innerText = `Monthly Budget : ${data.budget.MonthlyBudget}`;
+  yearbudget.innerText = `Yearly Budget : ${data.budget.YearlyBudget}`;
+  balance.innerText = `Total Balance : ${data.budget.TotalIncome - totalamount}`;
 }
 
-if (a) {
-  mbudget = parseFloat(a);
-
-  monthbudget.innerText = `Monthly Budget : ${mbudget}`;
+function formatAmount(amount: number) {
+  return amount.toLocaleString(undefined, {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 2,
+  });
 }
 
-if (c) {
-  ybudget = parseFloat(c);
-
-  yearbudget.innerText = `Yearly Budget : ${ybudget}`;
-}
-
-if (recent) {
-  let maintransac = JSON.parse(recent);
-
-  let recentarray = maintransac.slice(-5).reverse();
-
-  rtransaction.innerHTML = recentarray
-    .map(
-      (t: Transaction) => `<li> ${t.amount} ${t.category} ${t.date} </li> 
-      <br/>`,
-    )
-    .join("\n");
+function formatCategory(category: string) {
+  return category.charAt(0).toUpperCase() + category.slice(1);
 }

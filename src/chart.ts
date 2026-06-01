@@ -1,80 +1,94 @@
-import { Legend, plugins } from "chart.js";
 import { Transaction } from "./types";
 declare var Chart: any;
+const token = localStorage.getItem("token");
 
-console.log("hello");
-
-let transac = localStorage.getItem("transactions");
-
-let catexpend = localStorage.getItem("categoryamount");
-
-let cat;
-
-let catkey;
-let catval;
-
-if (catexpend) {
-  cat = JSON.parse(catexpend);
-  catkey = Object.keys(cat);
-  catval = Object.values(cat);
+if (!token) {
+  window.location.href = "login.html";
 }
 
-let transactions: Transaction[] = transac ? JSON.parse(transac) : [];
+let transactions: Transaction[] = [];
+let API_URL = "http://localhost:3000/expense";
 
-let dates = transactions.map((t: any) => {
-  return t.date;
-});
-let expenses = transactions.map((t: any) => {
-  return t.amount;
-});
+async function getExpense() {
+  const token = localStorage.getItem("token");
+  const response = await fetch(API_URL, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
 
-const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+  transactions = data.expense;
+}
 
-const piectx = document.querySelector("#piechart") as HTMLCanvasElement;
+async function initchart() {
+  await getExpense();
 
-new Chart(ctx, {
-  type: "line",
-  data: {
-    labels: dates,
-    datasets: [
-      {
-        label: "Expenditure By Dates",
-        data: expenses,
-        borderWidth: 1,
-        borderColor: "black",
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
+  const dates = transactions.map((t) => t.date);
+  const expenses = transactions.map((t) => t.amount);
+
+  const ctx = document.getElementById("myChart") as HTMLCanvasElement;
+
+  const piectx = document.querySelector("#piechart") as HTMLCanvasElement;
+
+  const categoryTrans = transactions.reduce<Record<string, number>>(
+    (totals, t) => {
+      totals[t.category] = (totals[t.category] || 0) + t.amount;
+      return totals;
+    },
+    {},
+  );
+
+  const categoryValues = Object.values(categoryTrans);
+
+  const categoryLabels = Object.keys(categoryTrans);
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: dates.length ? dates : ["No expenses"],
+      datasets: [
+        {
+          label: "Expenditure By Dates",
+          data: expenses.length ? expenses : [0],
+          borderWidth: 1,
+          borderColor: "black",
+          tension: 0.25,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
       },
     },
-  },
-});
+  });
 
-new Chart(piectx, {
-  type: "pie",
-  data: {
-    labels: catkey,
+  new Chart(piectx, {
+    type: "pie",
+    data: {
+      labels: categoryLabels.length ? categoryLabels : ["No expenses"],
 
-    datasets: [
-      {
-        label: "Expenditure By Category",
-        data: catval,
-        borderWidth: 1,
-        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
-        hoverOffset: 10,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "bottom",
+      datasets: [
+        {
+          label: "Expenditure By Category",
+          data: categoryValues.length ? categoryValues : [1],
+          borderWidth: 1,
+          backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+          hoverOffset: 10,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+        },
       },
     },
-  },
-});
+  });
+}
+initchart();

@@ -4,15 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2" />
   </head>
   <body>
     <form id="budget">
       <div id="budgetdiv" class="budget">
         <input
-          type="text"
+          type="number"
           id="budgetval"
           class="val"
+          min="0"
+          step="0.01"
           placeholder="Enter Monthly Budget"
         />
         <span id="monthlybudgeterror"></span>
@@ -20,9 +22,11 @@
 
       <div id="incomediv" class="budget">
         <input
-          type="text"
+          type="number"
           id="totalincome"
           class="val"
+          min="0"
+          step="0.01"
           placeholder="Enter Total Income"
         />
         <span id="totalIncomeError"></span>
@@ -30,9 +34,11 @@
 
       <div id="yearlydiv" class="budget">
         <input
-          type="text"
+          type="number"
           id="yearlybudget"
           class="val"
+          min="0"
+          step="0.01"
           placeholder="Enter Yearly Budget"
         />
         <span id="yearlybudgeterror"></span>
@@ -62,8 +68,8 @@
         <a href="budget.html"> Budget </a>
       </div>
 
-      <div id="Settings">
-        <a href="settings.html"> Settings </a>
+      <div id="logout">
+        <a href="logout.html"> Logout </a>
       </div>
     </footer>
 

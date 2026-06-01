@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2" />
   </head>
   <body>
     <div id="search">
@@ -14,12 +14,42 @@
       <h1>Transactions</h1>
     </div>
 
-    <button id="oldfirst">Old First</button>
-    <button id="newfirst">New First</button>
-    <button id="mostexpensive">Most Expensive</button>
+    <form id="update-Expense">
+      <input
+        type="number"
+        id="amount"
+        min="0.01"
+        step="0.01"
+        placeholder="Amount Spent"
+      />
+      <br />
+      <br />
 
-    <button id="leastexpensive">Least Expensive</button>
+      <span id="amount-error"> </span>
 
+      <select id="dropdown">
+        <option value="">--Expense Category--</option>
+        <option value="food" name="opt">Food</option>
+        <option value="travel" name="opt">Travel</option>
+        <option value="rent" name="opt">Rent</option>
+        <option value="internet" name="opt">Internet</option>
+        <option value="electricity" name="opt">Electricity</option>
+        <option value="healthcare" name="opt">Health Care</option>
+      </select>
+      <br />
+      <br />
+
+      <span id="category-error"> </span>
+
+      <label>Date Of Expense</label>
+      <br />
+      <input type="date" id="date" placeholder="Date Of Expense" />
+
+      <br />
+      <br />
+      <span id="date-error"> </span>
+
+      <button type="submit" id="save">Save Expense</button>
     <footer id="navbar">
       <div id="home">
         <a href="index.html"> Home </a>
@@ -41,8 +71,8 @@
         <a href="budget.html"> Budget </a>
       </div>
 
-      <div id="Settings">
-        <a href="settings.html"> Settings </a>
+      <div id="logout">
+        <a href="logout.html"> Logout </a>
       </div>
     </footer>
 

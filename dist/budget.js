@@ -1,38 +1,69 @@
 "use strict";
-let monthlybudgeterror = document.querySelector("#monthlybudgeterror");
-let totalIncomeError = document.querySelector("#totalIncomeError");
-let yearlybudgeterror = document.querySelector("#yearlybudgeterror");
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "login.html";
+}
+const monthlybudgeterror = document.querySelector("#monthlybudgeterror");
+const totalIncomeError = document.querySelector("#totalIncomeError");
+const yearlybudgeterror = document.querySelector("#yearlybudgeterror");
 let form = document.querySelector("#budget");
+const monthlybudgetdiv = document.querySelector("#budgetval");
+const totalIncomediv = document.querySelector("#totalincome");
+const yearlybudgetdiv = document.querySelector("#yearlybudget");
 let monthlybudget = 0;
 let totalIncome = 0;
 let yearlybudget = 0;
-let monthlybudgetstring = localStorage.getItem("monthlybudget");
-let totalIncomestring = localStorage.getItem("totalIncome");
-let yearlybudgetstring = localStorage.getItem("yearlybudget");
-if (monthlybudgetstring) {
-    monthlybudget = parseFloat(monthlybudgetstring);
-}
-if (totalIncomestring) {
-    totalIncome = parseFloat(totalIncomestring);
-}
-if (yearlybudgetstring) {
-    yearlybudget = parseFloat(yearlybudgetstring);
-}
-form.addEventListener("submit", () => {
-    let monthlybudgetdiv = document.querySelector("#budgetval");
-    monthlybudget = parseFloat(monthlybudgetdiv.value);
-    let totalIncomediv = document.querySelector("#totalincome");
-    totalIncome = parseFloat(totalIncomediv.value);
-    let yearlybudgetdiv = document.querySelector("#yearlybudget");
-    yearlybudget = parseFloat(yearlybudgetdiv.value);
-    let bool = validate(monthlybudget.toString(), totalIncome.toString(), yearlybudget.toString());
-    if (!bool) {
+const API_URL = "http://localhost:3000/budget";
+async function createBudget(Budgetval) {
+    const token = localStorage.getItem("token");
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(Budgetval),
+    });
+    if (!response.ok) {
+        alert("Failed to create Budget");
     }
-    else if (bool) {
-        alert("budget Added Successfully");
-        localStorage.setItem("monthlybudget", monthlybudget.toString());
-        localStorage.setItem("totalIncome", totalIncome.toString());
-        localStorage.setItem("yearlybudget", yearlybudget.toString());
+    return await response.json();
+}
+async function getBudget() {
+    const token = localStorage.getItem("token");
+    const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        alert("Failed to fetch budget");
+    }
+    return await response.json();
+}
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    monthlybudget = parseFloat(monthlybudgetdiv.value);
+    totalIncome = parseFloat(totalIncomediv.value);
+    yearlybudget = parseFloat(yearlybudgetdiv.value);
+    const BudgetVal = {
+        MonthlyBudget: monthlybudget,
+        TotalIncome: totalIncome,
+        YearlyBudget: yearlybudget,
+    };
+    const bool = validate(monthlybudget.toString(), totalIncome.toString(), yearlybudget.toString());
+    if (!bool) {
+        return;
+    }
+    try {
+        await createBudget(BudgetVal);
+        form.reset();
+        alert("budget added successfully");
+    }
+    catch (err) {
+        alert("error adding budget");
     }
 });
 function validate(monthlybudget, totalIncome, yearlybudget) {
@@ -40,29 +71,33 @@ function validate(monthlybudget, totalIncome, yearlybudget) {
     totalIncomeError.innerText = "";
     yearlybudgeterror.innerText = "";
     let istrue = true;
-    if (monthlybudget.trim() == "") {
+    if (monthlybudget.trim() === "") {
         istrue = false;
         monthlybudgeterror.innerText = "monthly budget cannot be empty";
     }
-    else if (isNaN(parseFloat(monthlybudget.trim()))) {
-        monthlybudgeterror.innerText = "monthly budget should be a number";
+    else if (Number.isNaN(parseFloat(monthlybudget.trim())) ||
+        parseFloat(monthlybudget.trim()) < 0) {
+        monthlybudgeterror.innerText = "monthly budget should be zero or more";
         istrue = false;
     }
-    if (totalIncome.trim() == "") {
+    if (totalIncome.trim() === "") {
         istrue = false;
         totalIncomeError.innerText = "Total Income cannot be empty";
     }
-    else if (isNaN(parseFloat(totalIncome.trim()))) {
-        totalIncomeError.innerText = "Total Income must be a number";
+    else if (Number.isNaN(parseFloat(totalIncome.trim())) ||
+        parseFloat(totalIncome.trim()) < 0) {
+        totalIncomeError.innerText = "Total Income must be zero or more";
         istrue = false;
     }
-    if (yearlybudget.trim() == "") {
+    if (yearlybudget.trim() === "") {
         istrue = false;
         yearlybudgeterror.innerText = "Yearly Budget cannot be empty";
     }
-    else if (isNaN(parseFloat(yearlybudget.trim()))) {
-        yearlybudgeterror.innerText = "Yearly Budget must be a number";
+    else if (Number.isNaN(parseFloat(yearlybudget.trim())) ||
+        parseFloat(yearlybudget.trim()) < 0) {
+        yearlybudgeterror.innerText = "Yearly Budget must be zero or more";
         istrue = false;
     }
     return istrue;
 }
+//# sourceMappingURL=budget.js.map

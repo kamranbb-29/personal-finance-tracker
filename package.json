@@ -4,6 +4,7 @@
   "description": "",
   "main": "budget.js",
   "scripts": {
+    "start": "node app.js",
     "build": "tsc",
     "check": "tsc --noEmit"
   },
@@ -12,7 +13,8 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "nodemon": "^3.1.14"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -23,7 +25,6 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.2.0",
     "mongoose": "^9.6.2",
-    "node": "^24.16.0",
-    "nodemon": "^3.1.14"
+    "node": "^24.16.0"
   }
 }

@@ -1,16 +1,30 @@
 :root {
-  --bg: #ecf1f5;
+  --bg: #f4f7fb;
+  --bg-soft: #eaf0f7;
   --surface: #ffffff;
-  --surface-muted: #f5f8fb;
-  --text: #142032;
-  --muted: #617087;
-  --border: #d5dde8;
-  --primary: #0e7c66;
-  --primary-dark: #09614f;
-  --accent: #284b9b;
-  --danger: #c53b3b;
-  --warning: #b66321;
-  --shadow: 0 18px 45px rgba(20, 32, 50, 0.12);
+  --surface-soft: #f8fafc;
+  --surface-strong: #eef4fb;
+  --text: #102033;
+  --muted: #617086;
+  --subtle: #8a97a8;
+  --border: #d9e2ec;
+  --border-strong: #c5d0dc;
+  --primary: #126b5f;
+  --primary-dark: #0d554c;
+  --primary-soft: #e3f3ef;
+  --accent: #315f9f;
+  --accent-soft: #e7eef9;
+  --warning: #b96a23;
+  --warning-soft: #fff0df;
+  --danger: #b8323a;
+  --danger-dark: #94262d;
+  --danger-soft: #fde8ea;
+  --shadow-sm: 0 8px 22px rgba(16, 32, 51, 0.08);
+  --shadow-md: 0 18px 44px rgba(16, 32, 51, 0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --content: 1160px;
 }
 
 * {
@@ -24,14 +38,10 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  padding: 32px 24px 112px;
+  padding: 32px 24px 116px;
   background:
-    linear-gradient(
-      180deg,
-      rgba(40, 75, 155, 0.1),
-      rgba(14, 124, 102, 0.06) 280px
-    ),
-    var(--bg);
+    radial-gradient(circle at top left, rgba(49, 95, 159, 0.14), transparent 360px),
+    linear-gradient(180deg, #fbfcfe 0, var(--bg) 340px);
   color: var(--text);
   font-family:
     Inter,
@@ -42,6 +52,15 @@ body {
     "Segoe UI",
     sans-serif;
   line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+body:has(#login-form),
+body:has(#register-form),
+body:has(.logout-panel) {
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
 
 button,
@@ -52,48 +71,72 @@ select {
 
 button {
   min-height: 42px;
-  min-width: 132px;
+  min-width: 118px;
   margin: 0;
   padding: 0 18px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--primary);
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 750;
+  letter-spacing: 0;
   cursor: pointer;
+  box-shadow: 0 10px 18px rgba(18, 107, 95, 0.16);
   transition:
-    background-color 160ms ease,
-    transform 160ms ease,
-    box-shadow 160ms ease;
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 button:hover {
   background: var(--primary-dark);
-  box-shadow: 0 8px 18px rgba(34, 111, 84, 0.2);
+  box-shadow: 0 14px 26px rgba(18, 107, 95, 0.22);
   transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(31, 111, 235, 0.28);
+  outline: 3px solid rgba(49, 95, 159, 0.22);
   outline-offset: 2px;
 }
 
 input,
 select {
   width: 100%;
-  min-height: 44px;
+  min-height: 46px;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #ffffff;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
   color: var(--text);
-  padding: 10px 14px;
+  padding: 11px 14px;
+  box-shadow: inset 0 1px 0 rgba(16, 32, 51, 0.02);
+  transition:
+    border-color 170ms ease,
+    box-shadow 170ms ease,
+    background-color 170ms ease;
+}
+
+input:hover,
+select:hover {
+  border-color: var(--border-strong);
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(49, 95, 159, 0.72);
+  box-shadow: 0 0 0 4px rgba(49, 95, 159, 0.1);
 }
 
 input::placeholder {
-  color: #8a94a6;
+  color: var(--subtle);
 }
 
 select {
@@ -105,7 +148,7 @@ label {
   width: 100%;
   color: var(--muted);
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 750;
 }
 
 span {
@@ -113,7 +156,7 @@ span {
   min-height: 20px;
   color: var(--danger);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 a {
@@ -131,20 +174,29 @@ li {
   list-style: none;
 }
 
+br {
+  display: none;
+}
+
+body > button {
+  margin: 0 8px 14px 0;
+}
+
 #dash-board {
   display: grid;
-  grid-template-columns: repeat(4, minmax(160px, 1fr));
-  gap: 16px;
-  width: min(1120px, 100%);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+  width: min(var(--content), 100%);
   margin: 0 auto;
 }
 
 #dash-board::before,
 form::before,
-#totalTransactions::before {
+#totalTransactions::before,
+body:has(#myChart)::before {
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -154,103 +206,197 @@ form::before,
   grid-column: 1 / -1;
 }
 
-form::before {
-  content: "Expense Tracker";
-}
-
-#totalTransactions::before {
-  content: "Activity";
-  margin-bottom: 6px;
-}
-
 #balance,
 #income,
 #expense,
 #mbudget,
 #ybudget {
-  min-height: 112px;
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  position: relative;
   display: flex;
-  align-items: center;
-  padding: 22px;
+  min-height: 132px;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid rgba(217, 226, 236, 0.9);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
   color: var(--text);
   font-size: clamp(1rem, 1.6vw, 1.22rem);
-  font-weight: 800;
+  font-weight: 850;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+#balance:hover,
+#income:hover,
+#expense:hover,
+#mbudget:hover,
+#ybudget:hover,
+#recent-transactions:hover,
+#totalTransactions:hover,
+form:hover,
+canvas:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+#balance::before,
+#income::before,
+#expense::before,
+#mbudget::before,
+#ybudget::before {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  content: "";
+}
+
+#balance,
+#income,
+#expense {
+  grid-column: span 2;
+}
+
+#mbudget,
+#ybudget {
+  grid-column: span 3;
 }
 
 #balance {
-  border-left: 5px solid var(--accent);
+  background: linear-gradient(145deg, #ffffff, var(--accent-soft));
+}
+
+#balance::before {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 #income,
 #mbudget {
-  border-left: 5px solid var(--primary);
+  background: linear-gradient(145deg, #ffffff, var(--primary-soft));
+}
+
+#income::before,
+#mbudget::before {
+  background: var(--primary);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 #expense,
 #ybudget {
-  border-left: 5px solid var(--warning);
+  background: linear-gradient(145deg, #ffffff, var(--warning-soft));
+}
+
+#expense::before,
+#ybudget::before {
+  background: var(--warning);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.24);
+}
+
+#recent-transactions {
+  grid-column: 1 / -1;
+  min-height: 240px;
+  width: 100%;
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid rgba(217, 226, 236, 0.92);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 750;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+#recent-transactions li,
+#totalTransactions li {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) minmax(120px, 1fr) minmax(110px, auto);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 650;
+  transition:
+    background-color 170ms ease,
+    border-color 170ms ease,
+    transform 170ms ease;
+}
+
+#recent-transactions li:hover,
+#totalTransactions li:hover {
+  border-color: var(--border-strong);
+  background: #ffffff;
+  transform: translateX(2px);
+}
+
+#recent-transactions strong,
+#totalTransactions strong {
+  color: var(--primary-dark);
+  font-size: 1.02rem;
+}
+
+form {
+  display: flex;
+  width: min(480px, 100%);
+  min-height: 420px;
+  margin: 40px auto 0;
+  padding: 32px;
+  border: 1px solid rgba(217, 226, 236, 0.94);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-md);
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+form::before {
+  content: "Expense Tracker";
+  margin-bottom: 8px;
+}
+
+form button {
+  width: 100%;
+  margin-top: 6px;
+}
+
+#add-expense::before {
+  content: "Add Expense";
+}
+
+#budget::before {
+  content: "Budget Setup";
 }
 
 #update-Expense {
   display: none;
 }
 
-#recent-transactions {
-  grid-column: 1 / -1;
-  min-height: 220px;
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  padding: 24px;
-  overflow: auto;
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-#recent-transactions li,
-#totalTransactions li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-muted);
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-form {
-  display: flex;
-  min-height: 420px;
-  width: min(480px, 100%);
-  margin: 48px auto 0;
-  padding: 32px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  align-items: stretch;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-}
-
-form button {
-  width: 100%;
-  margin-top: 10px;
+#update-Expense::before {
+  content: "Update Expense";
 }
 
 .budget {
@@ -261,70 +407,271 @@ form button {
 }
 
 #budget {
-  gap: 18px;
+  gap: 16px;
+}
+
+.container {
+  width: min(440px, 100%);
+}
+
+.container h1 {
+  margin: 0 0 18px;
+  color: var(--text);
+  font-size: clamp(2rem, 7vw, 2.7rem);
+  line-height: 1.05;
+  text-align: center;
+}
+
+#login-form,
+#register-form {
+  min-height: auto;
+  margin: 0;
+  gap: 14px;
+}
+
+#login-form::before {
+  content: "Welcome Back";
+}
+
+#register-form::before {
+  content: "Create Account";
+}
+
+#message {
+  width: min(440px, 100%);
+  min-height: 24px;
+  margin: 14px 0 0;
+  color: var(--danger);
+  font-weight: 700;
+  text-align: center;
+}
+
+.logout-panel {
+  display: grid;
+  width: min(460px, 100%);
+  gap: 16px;
+  padding: 34px;
+  border: 1px solid rgba(217, 226, 236, 0.94);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96)),
+    var(--surface);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.logout-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 2px;
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(184, 50, 58, 0.12), rgba(49, 95, 159, 0.1)),
+    var(--danger-soft);
+  position: relative;
+}
+
+.logout-icon::before,
+.logout-icon::after {
+  position: absolute;
+  content: "";
+}
+
+.logout-icon::before {
+  inset: 15px 18px;
+  border: 3px solid var(--danger);
+  border-right-color: transparent;
+  border-radius: 9px;
+}
+
+.logout-icon::after {
+  top: 27px;
+  right: 12px;
+  width: 20px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--danger);
+  box-shadow: 7px -5px 0 -2px var(--danger), 7px 5px 0 -2px var(--danger);
+}
+
+.logout-kicker {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.logout-panel h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  line-height: 1.04;
+}
+
+.logout-copy {
+  width: min(340px, 100%);
+  margin: 0 auto 8px;
+  color: var(--muted);
+  font-weight: 650;
+}
+
+.logout-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.logout-actions button,
+.logout-actions .button-secondary {
+  width: 100%;
+}
+
+.button-secondary {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 750;
+  box-shadow: 0 10px 18px rgba(16, 32, 51, 0.06);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.button-secondary:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-soft);
+  box-shadow: 0 14px 26px rgba(16, 32, 51, 0.1);
+  transform: translateY(-1px);
+}
+
+.button-secondary:active {
+  transform: translateY(0);
 }
 
 #search {
-  width: min(1120px, 100%);
+  width: min(var(--content), 100%);
   margin: 0 auto 18px;
 }
 
 #searchbar {
   width: 100%;
-  height: 52px;
+  min-height: 54px;
   margin: 0;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  padding-left: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
 }
 
 #totalTransactions {
   display: flex;
-  width: min(1120px, 100%);
-  min-height: 420px;
+  width: min(var(--content), 100%);
+  min-height: 440px;
   margin: 0 auto 18px;
   padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  flex-direction: column;
   overflow: auto;
+  border: 1px solid rgba(217, 226, 236, 0.94);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
+  flex-direction: column;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+#totalTransactions::before {
+  content: "Activity";
+  margin-bottom: 6px;
 }
 
 #totalTransactions h1 {
   margin: 0 0 12px;
   color: var(--text);
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
   line-height: 1.15;
 }
 
 #totalTransactions p {
   margin: 0;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 650;
 }
 
-body > button {
-  margin-right: 8px;
-  margin-bottom: 10px;
+#totalTransactions button {
+  align-self: flex-start;
+  min-width: 96px;
+  margin: 10px 8px 2px 0;
+  box-shadow: none;
+}
+
+#totalTransactions #Update {
+  background: var(--accent);
+}
+
+#totalTransactions #Update:hover {
+  background: #244f89;
+}
+
+#totalTransactions #delete {
+  background: var(--danger);
+}
+
+#totalTransactions #delete:hover {
+  background: var(--danger-dark);
+}
+
+body:has(#myChart) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: 18px;
+  align-items: start;
+  width: min(var(--content), calc(100% - 48px));
+  margin: 0 auto;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+body:has(#myChart)::before {
+  content: "Reports";
+  grid-column: 1 / -1;
+}
+
+body:has(#myChart) > div {
+  width: 100% !important;
+  min-height: 430px;
+  margin: 0;
+  padding: 22px;
+  border: 1px solid rgba(217, 226, 236, 0.94);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-sm);
+}
+
+body:has(#myChart) > div:has(#piechart) {
+  min-height: 430px;
+  height: auto !important;
 }
 
 canvas {
   display: block;
-  width: min(920px, 100%) !important;
-  max-height: 420px;
-  margin: 0 auto 28px;
-  padding: 18px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  width: 100% !important;
+  max-height: 390px;
+  margin: 0 auto;
 }
 
-body > div:has(#piechart) {
-  width: min(520px, 100%) !important;
-  height: auto !important;
-  margin: 0 auto;
+#piechart {
+  max-height: 360px;
 }
 
 #navbar {
@@ -336,14 +683,14 @@ body > div:has(#piechart) {
   display: flex;
   min-height: 68px;
   width: auto;
-  max-width: 1120px;
+  max-width: var(--content);
   margin: 0 auto;
   padding: 10px;
-  border: 1px solid rgba(216, 222, 232, 0.92);
-  border-radius: 16px;
-  background: rgba(20, 32, 50, 0.94);
-  box-shadow: 0 16px 40px rgba(20, 32, 50, 0.24);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(217, 226, 236, 0.26);
+  border-radius: var(--radius-lg);
+  background: rgba(16, 32, 51, 0.94);
+  box-shadow: 0 18px 42px rgba(16, 32, 51, 0.25);
+  backdrop-filter: blur(14px);
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -360,27 +707,55 @@ body > div:has(#piechart) {
   justify-content: center;
   padding: 0 14px;
   border-radius: 10px;
-  color: #d9e2ee;
+  color: #d8e2ee;
   font-size: 0.94rem;
   font-weight: 800;
   white-space: nowrap;
   transition:
-    background-color 160ms ease,
-    color 160ms ease;
+    background-color 170ms ease,
+    color 170ms ease,
+    transform 170ms ease;
 }
 
 #navbar a:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.13);
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   body {
-    padding: 20px 14px 132px;
+    padding: 24px 16px 138px;
   }
 
   #dash-board {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #balance,
+  #income,
+  #expense,
+  #mbudget,
+  #ybudget {
+    grid-column: span 1;
+  }
+
+  body:has(#myChart) {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 24px 16px 138px;
+  }
+
+  body:has(#myChart)::before {
+    display: block;
+    margin: 0 auto 18px;
+    width: min(var(--content), 100%);
+  }
+
+  body:has(#myChart) > div {
+    width: min(var(--content), 100%) !important;
+    margin: 0 auto 18px;
   }
 
   #navbar {
@@ -395,27 +770,67 @@ body > div:has(#piechart) {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 620px) {
+  body {
+    padding: 18px 12px 166px;
+  }
+
+  body:has(#login-form),
+  body:has(#register-form),
+  body:has(.logout-panel) {
+    padding: 18px;
+  }
+
   #dash-board {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  #balance,
+  #income,
+  #expense,
+  #mbudget,
+  #ybudget {
+    min-height: 118px;
+    padding: 22px;
   }
 
   form,
+  .logout-panel,
   #totalTransactions,
-  #recent-transactions {
+  #recent-transactions,
+  body:has(#myChart) > div {
     padding: 18px;
+  }
+
+  .logout-actions {
+    grid-template-columns: 1fr;
   }
 
   #recent-transactions li,
   #totalTransactions li {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
 
-  body > button {
+  body > button,
+  #totalTransactions button {
     width: 100%;
     margin-right: 0;
+  }
+
+  body:has(#myChart) {
+    padding: 18px 12px 166px;
+  }
+
+  body:has(#myChart) > div,
+  body:has(#myChart) > div:has(#piechart) {
+    min-height: 320px;
+  }
+
+  canvas,
+  #piechart {
+    max-height: 300px;
   }
 
   #navbar {

@@ -34,16 +34,49 @@ async function initchart() {
                 {
                     label: "Expenditure By Dates",
                     data: expenses.length ? expenses : [0],
-                    borderWidth: 1,
-                    borderColor: "black",
-                    tension: 0.25,
+                    borderWidth: 3,
+                    borderColor: "#126b5f",
+                    backgroundColor: "rgba(18, 107, 95, 0.12)",
+                    pointBackgroundColor: "#315f9f",
+                    pointBorderColor: "#ffffff",
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.35,
                 },
             ],
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "#617086",
+                        boxWidth: 12,
+                        boxHeight: 12,
+                        padding: 18,
+                    },
+                },
+            },
             scales: {
+                x: {
+                    grid: {
+                        color: "rgba(197, 208, 220, 0.35)",
+                    },
+                    ticks: {
+                        color: "#617086",
+                    },
+                },
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        color: "rgba(197, 208, 220, 0.45)",
+                    },
+                    ticks: {
+                        color: "#617086",
+                    },
                 },
             },
         },
@@ -56,17 +89,25 @@ async function initchart() {
                 {
                     label: "Expenditure By Category",
                     data: categoryValues.length ? categoryValues : [1],
-                    borderWidth: 1,
-                    backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
-                    hoverOffset: 10,
+                    borderWidth: 3,
+                    borderColor: "#ffffff",
+                    backgroundColor: ["#126b5f", "#315f9f", "#b96a23", "#8b5cf6", "#d9466f", "#0f766e"],
+                    hoverOffset: 12,
                 },
             ],
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: "bottom",
+                    labels: {
+                        color: "#617086",
+                        boxWidth: 12,
+                        boxHeight: 12,
+                        padding: 18,
+                    },
                 },
             },
         },

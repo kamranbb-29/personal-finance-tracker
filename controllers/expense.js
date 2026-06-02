@@ -18,6 +18,14 @@ const addExpense = async (req, res) => {
       ...req.body,
       createdBy: req.user.userID,
     });
+    const today = new Date().toISOString().split("T")[0];
+    const date = expense.date;
+
+    if (date > today) {
+      return res.status(400).json({
+        msg: "Date cannot be in the future",
+      });
+    }
     res.status(201).json({ expense });
   } catch (err) {
     res.status(500).json({ msg: err.message });

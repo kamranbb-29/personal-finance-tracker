@@ -21,13 +21,20 @@ async function createExpense(expenseData) {
         body: JSON.stringify(expenseData),
     });
     if (!response.ok) {
-        throw new Error("Failed to create expense");
+        const data = await response.json();
+        alert(data.msg);
+        return;
     }
     return await response.json();
 }
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!validate()) {
+        return;
+    }
+    const today = new Date().toISOString().split("T")[0];
+    if (date.value > today) {
+        alert("Date cannot be in future");
         return;
     }
     const expenseData = {

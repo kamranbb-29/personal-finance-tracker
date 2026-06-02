@@ -12,8 +12,7 @@ const expense = require("./routes/expense");
 
 app.use(cors());
 app.use(express.json());
-
-port = 3000;
+const port = process.env.PORT || 3000;
 
 const run = async () => {
   try {

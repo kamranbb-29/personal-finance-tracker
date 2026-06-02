@@ -165,7 +165,7 @@ function render(items: Transaction[]) {
 function formatAmount(amount: number) {
   return amount.toLocaleString(undefined, {
     style: "currency",
-    currency: "USD",
+    currency: "INR",
     maximumFractionDigits: 2,
   });
 }

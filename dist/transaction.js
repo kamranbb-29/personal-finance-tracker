@@ -119,7 +119,7 @@ function render(items) {
 function formatAmount(amount) {
     return amount.toLocaleString(undefined, {
         style: "currency",
-        currency: "USD",
+        currency: "INR",
         maximumFractionDigits: 2,
     });
 }

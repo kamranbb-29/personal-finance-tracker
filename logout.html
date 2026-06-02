@@ -3,10 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Logout</title>
+    <link rel="stylesheet" href="style.css?v=4" />
   </head>
   <body>
-    <button id="logout">logout</button>
+    <main class="logout-panel" aria-labelledby="logout-title">
+      <div class="logout-icon" aria-hidden="true"></div>
+      <p class="logout-kicker">Expense Tracker</p>
+      <h1 id="logout-title">Ready to sign out?</h1>
+      <p class="logout-copy">
+        End this session and return to the login screen.
+      </p>
+      <div class="logout-actions">
+        <button id="logout" type="button">Logout</button>
+        <a class="button-secondary" href="index.html">Stay signed in</a>
+      </div>
+    </main>
 
     <script src="./dist/logout.js"></script>
   </body>

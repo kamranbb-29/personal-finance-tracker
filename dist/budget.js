@@ -27,6 +27,9 @@ async function createBudget(Budgetval) {
     if (!response.ok) {
         alert("Failed to create Budget");
     }
+    else {
+        return await response.json();
+    }
     return await response.json();
 }
 async function getBudget() {

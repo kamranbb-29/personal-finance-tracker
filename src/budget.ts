@@ -1,4 +1,5 @@
 const token = localStorage.getItem("token");
+import { getExpense } from "./dashboard";
 
 if (!token) {
   window.location.href = "login.html";
@@ -65,6 +66,7 @@ async function getBudget() {
 
   return await response.json();
 }
+getExpense();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();

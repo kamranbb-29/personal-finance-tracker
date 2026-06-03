@@ -24,7 +24,7 @@ const rtransaction = document.querySelector(
   "#recent-transactions",
 ) as HTMLElement;
 
-async function getExpense() {
+export async function getExpense() {
   const token = localStorage.getItem("token");
   const response = await fetch(API_URL1, {
     headers: {

@@ -12,7 +12,7 @@ let totalamount = 0;
 const API_URL1 = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 const API_URL2 = "https://personal-finance-tracker-7r8z.onrender.com/budget";
 const rtransaction = document.querySelector("#recent-transactions");
-async function getExpense() {
+export async function getExpense() {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL1, {
         headers: {
@@ -63,5 +63,4 @@ function formatAmount(amount) {
 function formatCategory(category) {
     return category.charAt(0).toUpperCase() + category.slice(1);
 }
-export {};
 //# sourceMappingURL=dashboard.js.map

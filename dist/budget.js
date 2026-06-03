@@ -60,7 +60,7 @@ form.addEventListener("submit", async (event) => {
     try {
         await createBudget(BudgetVal);
         form.reset();
-        window.location.href = "dashboard.html";
+        window.location.href = "index.html";
         alert("budget added successfully");
     }
     catch (err) {

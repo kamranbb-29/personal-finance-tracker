@@ -25,8 +25,8 @@ form2.addEventListener("submit", async (event) => {
     });
     const data = await response.json();
 
-    localStorage.setItem("token", data.token);
     if (response.ok) {
+      localStorage.setItem("token", data.token);
       message.innerText = "Logged In Successfully";
       email.value = "";
       password.value = "";

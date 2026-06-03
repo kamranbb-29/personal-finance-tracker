@@ -446,6 +446,29 @@ form button {
   text-align: center;
 }
 
+.auth-switch {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.auth-switch span {
+  min-height: auto;
+  color: var(--muted);
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.auth-switch .button-secondary {
+  min-width: 104px;
+  min-height: 40px;
+  box-shadow: none;
+}
+
 .logout-panel {
   display: grid;
   width: min(460px, 100%);

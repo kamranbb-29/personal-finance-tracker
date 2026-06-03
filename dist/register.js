@@ -29,16 +29,19 @@ form1.addEventListener("submit", async (event) => {
     const data = await response.json();
 
     if (response.ok) {
-      message.innerText = "User Registered Successfully";
-      window.location.href = "login.html";
+      message.innerText = "User registered successfully. Redirecting to login...";
+      name.value = "";
+      email.value = "";
+      password.value = "";
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 900);
     } else {
       message.innerText = data.msg;
+      password.value = "";
     }
-
-    name.value = "";
-    email.value = "";
-    password.value = "";
   } catch (err) {
+    message.innerText = "Registration failed. Please try again.";
     console.log(err);
   }
 });

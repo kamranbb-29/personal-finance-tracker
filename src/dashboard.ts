@@ -16,9 +16,9 @@ const monthbudget = document.querySelector("#mbudget") as HTMLElement;
 const yearbudget = document.querySelector("#ybudget") as HTMLElement;
 let transactions: Transaction[] = [];
 let totalamount = 0;
-const API_URL1 = "http://localhost:3000/expense";
+const API_URL1 = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 
-const API_URL2 = "http://localhost:3000/budget";
+const API_URL2 = "https://personal-finance-tracker-7r8z.onrender.com/budget";
 
 const rtransaction = document.querySelector(
   "#recent-transactions",

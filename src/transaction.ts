@@ -33,7 +33,7 @@ const leastexpensive = document.querySelector(
 
 let transactions: Transaction[] = [];
 
-let API_URL = "http://localhost:3000/expense";
+let API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 
 async function getExpense() {
   const token = localStorage.getItem("token");

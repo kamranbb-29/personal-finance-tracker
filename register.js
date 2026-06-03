@@ -6,7 +6,7 @@ const email = document.querySelector("#email");
 
 const password = document.querySelector("#password");
 
-const AUTH_URL = "http://localhost:3000/register";
+const AUTH_URL = "https://personal-finance-tracker-7r8z.onrender.com/register";
 
 const message = document.querySelector("#message");
 

@@ -13,7 +13,7 @@ const yearlybudgetdiv = document.querySelector("#yearlybudget");
 let monthlybudget = 0;
 let totalIncome = 0;
 let yearlybudget = 0;
-const API_URL = "http://localhost:3000/budget";
+const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/budget";
 async function createBudget(Budgetval) {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {

@@ -14,7 +14,7 @@ const amountError = document.querySelector("#amount-error") as HTMLElement;
 const categoryError = document.querySelector("#category-error") as HTMLElement;
 const dateError = document.querySelector("#date-error") as HTMLElement;
 
-const API_URL = "http://localhost:3000/expense";
+const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 
 async function createExpense(expenseData: Omit<Transaction, "_id">) {
   const token = localStorage.getItem("token");

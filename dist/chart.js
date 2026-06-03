@@ -3,7 +3,7 @@ if (!token) {
     window.location.href = "login.html";
 }
 let transactions = [];
-let API_URL = "http://localhost:3000/expense";
+let API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 async function getExpense() {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {
@@ -91,7 +91,14 @@ async function initchart() {
                     data: categoryValues.length ? categoryValues : [1],
                     borderWidth: 3,
                     borderColor: "#ffffff",
-                    backgroundColor: ["#126b5f", "#315f9f", "#b96a23", "#8b5cf6", "#d9466f", "#0f766e"],
+                    backgroundColor: [
+                        "#126b5f",
+                        "#315f9f",
+                        "#b96a23",
+                        "#8b5cf6",
+                        "#d9466f",
+                        "#0f766e",
+                    ],
                     hoverOffset: 12,
                 },
             ],

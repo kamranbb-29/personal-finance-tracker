@@ -9,7 +9,7 @@ const form = document.querySelector("#add-expense");
 const amountError = document.querySelector("#amount-error");
 const categoryError = document.querySelector("#category-error");
 const dateError = document.querySelector("#date-error");
-const API_URL = "http://localhost:3000/expense";
+const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 async function createExpense(expenseData) {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {

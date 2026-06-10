@@ -9,6 +9,7 @@ const form = document.querySelector("#add-expense");
 const amountError = document.querySelector("#amount-error");
 const categoryError = document.querySelector("#category-error");
 const dateError = document.querySelector("#date-error");
+const btn = document.querySelector("button");
 const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 async function createExpense(expenseData) {
     const token = localStorage.getItem("token");
@@ -29,6 +30,7 @@ async function createExpense(expenseData) {
 }
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    btn.disabled = true;
     if (!validate()) {
         return;
     }
@@ -49,6 +51,9 @@ form.addEventListener("submit", async (event) => {
     }
     catch (err) {
         console.log(err);
+    }
+    finally {
+        btn.disabled = false;
     }
 });
 function validate() {

@@ -10,6 +10,7 @@ let form = document.querySelector("#budget");
 const monthlybudgetdiv = document.querySelector("#budgetval");
 const totalIncomediv = document.querySelector("#totalincome");
 const yearlybudgetdiv = document.querySelector("#yearlybudget");
+const btn = document.querySelector("button");
 let monthlybudget = 0;
 let totalIncome = 0;
 let yearlybudget = 0;
@@ -47,6 +48,7 @@ async function getBudget() {
 }
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    btn.disabled = true;
     monthlybudget = parseFloat(monthlybudgetdiv.value);
     totalIncome = parseFloat(totalIncomediv.value);
     yearlybudget = parseFloat(yearlybudgetdiv.value);
@@ -67,6 +69,9 @@ form.addEventListener("submit", async (event) => {
     }
     catch (err) {
         alert(err.message);
+    }
+    finally {
+        btn.disabled = false;
     }
 });
 function validate(monthlybudget, totalIncome, yearlybudget) {

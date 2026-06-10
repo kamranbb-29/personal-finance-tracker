@@ -26,6 +26,8 @@ const yearlybudgetdiv = document.querySelector(
   "#yearlybudget",
 ) as HTMLInputElement;
 
+const btn = document.querySelector("button") as HTMLButtonElement;
+
 let monthlybudget: number = 0;
 let totalIncome: number = 0;
 let yearlybudget: number = 0;
@@ -69,6 +71,9 @@ async function getBudget() {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  btn.disabled = true;
+
   monthlybudget = parseFloat(monthlybudgetdiv.value);
   totalIncome = parseFloat(totalIncomediv.value);
   yearlybudget = parseFloat(yearlybudgetdiv.value);
@@ -95,6 +100,8 @@ form.addEventListener("submit", async (event) => {
     alert("budget added successfully");
   } catch (err: any) {
     alert(err.message);
+  } finally {
+    btn.disabled = false;
   }
 });
 

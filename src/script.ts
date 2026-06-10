@@ -13,6 +13,7 @@ const form = document.querySelector("#add-expense") as HTMLFormElement;
 const amountError = document.querySelector("#amount-error") as HTMLElement;
 const categoryError = document.querySelector("#category-error") as HTMLElement;
 const dateError = document.querySelector("#date-error") as HTMLElement;
+const btn = document.querySelector("button") as HTMLButtonElement;
 
 const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
 
@@ -38,10 +39,12 @@ async function createExpense(expenseData: Omit<Transaction, "_id">) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  btn.disabled = true;
 
   if (!validate()) {
     return;
   }
+
   const today = new Date().toISOString().split("T")[0];
 
   if (date.value > today) {
@@ -62,6 +65,8 @@ form.addEventListener("submit", async (event) => {
     form.reset();
   } catch (err) {
     console.log(err);
+  } finally {
+    btn.disabled = false;
   }
 });
 

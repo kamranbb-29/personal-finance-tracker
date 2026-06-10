@@ -20,6 +20,9 @@ export async function getExpense() {
         },
     });
     const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.msg);
+    }
     transactions = data.expense;
     totalamount = transactions.reduce((sum, t) => sum + t.amount, 0);
     expense.innerText = `Total Expenses : ${formatAmount(totalamount)}`;
@@ -34,7 +37,15 @@ export async function getExpense() {
             ].join("\n");
     await getBudget();
 }
-getExpense();
+async function check() {
+    try {
+        await getExpense();
+    }
+    catch (err) {
+        alert(err.message);
+    }
+}
+check();
 async function getBudget() {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL2, {
@@ -44,10 +55,10 @@ async function getBudget() {
             Authorization: `Bearer ${token}`,
         },
     });
-    if (!response.ok) {
-        throw new Error("Failed to fetch budget");
-    }
     const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.msg);
+    }
     income.innerText = `Total Income : ${data.budget.TotalIncome}`;
     monthbudget.innerText = `Monthly Budget : ${data.budget.MonthlyBudget}`;
     yearbudget.innerText = `Yearly Budget : ${data.budget.YearlyBudget}`;

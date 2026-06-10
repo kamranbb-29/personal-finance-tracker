@@ -24,13 +24,11 @@ async function createBudget(Budgetval) {
         },
         body: JSON.stringify(Budgetval),
     });
+    const data = await response.json();
     if (!response.ok) {
-        alert("Failed to create Budget");
+        throw new Error(data.msg);
     }
-    else {
-        return await response.json();
-    }
-    return await response.json();
+    return data;
 }
 async function getBudget() {
     const token = localStorage.getItem("token");
@@ -41,10 +39,11 @@ async function getBudget() {
             Authorization: `Bearer ${token}`,
         },
     });
+    const data = await response.json();
     if (!response.ok) {
-        alert("Failed to fetch budget");
+        throw new Error(data.msg);
     }
-    return await response.json();
+    return data;
 }
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -67,7 +66,7 @@ form.addEventListener("submit", async (event) => {
         alert("budget added successfully");
     }
     catch (err) {
-        alert("error adding budget");
+        alert(err.message);
     }
 });
 function validate(monthlybudget, totalIncome, yearlybudget) {

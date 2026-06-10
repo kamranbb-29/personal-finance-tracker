@@ -32,6 +32,10 @@ export async function getExpense() {
     },
   });
   const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.msg);
+  }
   transactions = data.expense;
 
   totalamount = transactions.reduce((sum, t) => sum + t.amount, 0);
@@ -57,7 +61,14 @@ export async function getExpense() {
   await getBudget();
 }
 
-getExpense();
+async function check() {
+  try {
+    await getExpense();
+  } catch (err: any) {
+    alert(err.message);
+  }
+}
+check();
 async function getBudget() {
   const token = localStorage.getItem("token");
 
@@ -68,11 +79,10 @@ async function getBudget() {
       Authorization: `Bearer ${token}`,
     },
   });
-  if (!response.ok) {
-    throw new Error("Failed to fetch budget");
-  }
-
   const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.msg);
+  }
 
   income.innerText = `Total Income : ${data.budget.TotalIncome}`;
   monthbudget.innerText = `Monthly Budget : ${data.budget.MonthlyBudget}`;

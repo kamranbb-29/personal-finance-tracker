@@ -9,6 +9,12 @@ const ExpenseSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
+    validate: {
+      validator: function (value) {
+        return value <= new Date();
+      },
+      message: "Date cannot be in the future",
+    },
   },
   category: {
     type: String,

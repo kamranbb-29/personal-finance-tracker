@@ -20,6 +20,11 @@ const ExpenseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 200,
+  },
   createdBy: {
     type: mongoose.Types.ObjectId,
     ref: "User",

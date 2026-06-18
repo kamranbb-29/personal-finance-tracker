@@ -6,11 +6,13 @@ const amount = document.querySelector("#amount");
 const expensecategory = document.querySelector("#dropdown");
 const date = document.querySelector("#date");
 const form = document.querySelector("#add-expense");
+const description = document.querySelector("#description");
 const amountError = document.querySelector("#amount-error");
 const categoryError = document.querySelector("#category-error");
 const dateError = document.querySelector("#date-error");
 const btn = document.querySelector("button");
 const API_URL = "https://personal-finance-tracker-7r8z.onrender.com/expense";
+let msg;
 async function createExpense(expenseData) {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {
@@ -23,7 +25,7 @@ async function createExpense(expenseData) {
     });
     if (!response.ok) {
         const data = await response.json();
-        alert(data.msg);
+        msg = data.msg;
         return;
     }
     return await response.json();
@@ -64,18 +66,22 @@ function validate() {
     const parsedAmount = parseFloat(amount.value.trim());
     if (amount.value.trim() === "") {
         istrue = false;
-        amountError.innerText = "Amount cannot be empty";
+        amountError.innerText = msg;
     }
     else if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
-        amountError.innerText = "Amount must be a positive number";
+        amountError.innerText = msg;
         istrue = false;
     }
     if (date.value.trim() === "") {
-        dateError.innerText = "date cannot be empty";
+        dateError.innerText = msg;
         istrue = false;
     }
     if (expensecategory.value === "") {
-        categoryError.innerText = "Category cannot be empty";
+        categoryError.innerText = msg;
+        istrue = false;
+    }
+    if (description.value.length > 200) {
+        categoryError.innerText = msg;
         istrue = false;
     }
     return istrue;

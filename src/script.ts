@@ -45,6 +45,7 @@ form.addEventListener("submit", async (event) => {
   btn.disabled = true;
 
   if (!validate()) {
+    btn.disabled = false;
     return;
   }
 
@@ -82,24 +83,25 @@ function validate() {
 
   if (amount.value.trim() === "") {
     istrue = false;
-    amountError.innerText = msg;
+    amountError.innerText = "Amount is required";
   } else if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
-    amountError.innerText = msg;
+    amountError.innerText = "Amount must be a positive number";
     istrue = false;
   }
 
   if (date.value.trim() === "") {
-    dateError.innerText = msg;
+    dateError.innerText = "Date cannot be empty";
     istrue = false;
   }
 
   if (expensecategory.value === "") {
-    categoryError.innerText = msg;
+    categoryError.innerText = "Expense Category cannot be empty";
     istrue = false;
   }
 
   if (description.value.length > 200) {
-    categoryError.innerText = msg;
+    categoryError.innerText =
+      "The description should not contain more than 200 characters";
     istrue = false;
   }
 

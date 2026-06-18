@@ -36,7 +36,7 @@ async function createExpense(expenseData: Omit<Transaction, "_id">) {
     const data = await response.json();
     msg = data.msg;
     alert(msg);
-    return;
+    throw new Error("Invalid Data");
   }
 
   return await response.json();
@@ -71,7 +71,7 @@ form.addEventListener("submit", async (event) => {
     alert("expense added successfully");
     form.reset();
   } catch (err) {
-    console.log(err);
+    alert(err);
   } finally {
     btn.disabled = false;
   }
@@ -103,7 +103,7 @@ function validate() {
   }
 
   if (description.value.length > 200) {
-    categoryError.innerText =
+    descError.innerText =
       "The description should not contain more than 200 characters";
     istrue = false;
   }

@@ -13,6 +13,7 @@ const form = document.querySelector("#add-expense") as HTMLFormElement;
 const description = document.querySelector("#description") as HTMLInputElement;
 const amountError = document.querySelector("#amount-error") as HTMLElement;
 const categoryError = document.querySelector("#category-error") as HTMLElement;
+const descError = document.querySelector("#description-error") as HTMLElement;
 const dateError = document.querySelector("#date-error") as HTMLElement;
 const btn = document.querySelector("button") as HTMLButtonElement;
 
@@ -54,6 +55,7 @@ form.addEventListener("submit", async (event) => {
 
   if (date.value > today) {
     alert("Date cannot be in future");
+    btn.disabled = false;
     return;
   }
 

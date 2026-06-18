@@ -34,6 +34,7 @@ async function createExpense(expenseData: Omit<Transaction, "_id">) {
   if (!response.ok) {
     const data = await response.json();
     msg = data.msg;
+    alert(msg);
     return;
   }
 

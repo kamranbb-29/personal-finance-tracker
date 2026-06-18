@@ -26,6 +26,7 @@ async function createExpense(expenseData) {
     if (!response.ok) {
         const data = await response.json();
         msg = data.msg;
+        alert(msg);
         return;
     }
     return await response.json();

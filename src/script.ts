@@ -63,6 +63,7 @@ form.addEventListener("submit", async (event) => {
     amount: parseFloat(amount.value),
     category: expensecategory.value,
     date: date.value,
+    description: description.value,
   };
 
   try {
